@@ -3,6 +3,7 @@ package sessions
 import (
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/context"
@@ -57,8 +58,14 @@ type Session interface {
 	Save() error
 }
 
+const nameSeparator = "--"
+
 func Sessions(name string, store Store) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		if suffix, ok := c.Get("session_suffix"); ok {
+			n := strings.Split(name, nameSeparator)
+			name = n[0] + nameSeparator + suffix.(string)
+		}
 		s := &session{name, c.Request, store, nil, false, c.Writer}
 		c.Set(DefaultKey, s)
 		defer context.Clear(c.Request)
