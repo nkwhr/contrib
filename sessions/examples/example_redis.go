@@ -1,8 +1,8 @@
 package mainredis
 
 import (
-	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/nkwhr/contrib/sessions"
 )
 
 func main() {
